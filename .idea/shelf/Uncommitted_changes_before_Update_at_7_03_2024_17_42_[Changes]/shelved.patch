@@ -1,0 +1,27 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from flask import Flask, render_template, request, redirect, session\r\nimport pymongo\r\n\r\napp = Flask(__name__)\r\napp.secret_key = 'cok gizli super secret key'\r\n\r\n# MongoDB'ye bağlantı kur\r\nclient = pymongo.MongoClient()\r\ndb = client[\"ToDoDB\"]\r\n\r\n\r\ndef get_next_sequence_value(seq_name):\r\n    sequence_document = db.counters.find_one_and_update(\r\n        filter={\"_id\": seq_name},\r\n        update={\"$inc\": {\"seq\": 1}},\r\n        upsert=True\r\n    )\r\n    if sequence_document is None:\r\n        raise ValueError(\"Sequence belgesi bulunamadı.\")\r\n    return sequence_document[\"seq\"]\r\n@app.route('/')\r\ndef home_page():\r\n    gorevler = list(db[\"gorevler\"].find().sort(\"_id\", -1))\r\n    if not gorevler:\r\n        return render_template(\"gorev.html\", aktif_gorev=None, gorevler=[], yapilacaklar=[])\r\n\r\n    aktif_gorev = gorevler[0]\r\n    yapilacaklar = list(db[\"yapilacaklar\"].find({\"gorev_id\": aktif_gorev[\"_id\"]}))\r\n    return render_template(\"gorev.html\", aktif_gorev=aktif_gorev, gorevler=gorevler, yapilacaklar=yapilacaklar)\r\n\r\n\r\n@app.route('/gorev-ekle', methods=[\"GET\", \"POST\"])\r\ndef gorev_ekle():\r\n    if request.method == 'GET':\r\n        return render_template(\"gorev_ekle.html\")\r\n    elif request.method == 'POST':\r\n        gorev = request.form[\"gorev\"]\r\n        db[\"gorevler\"].insert_one({\r\n            \"_id\": get_next_sequence_value(\"gorevler\"),\r\n            \"gorev\": gorev\r\n        })\r\n        return redirect(\"/\", 302)\r\n\r\n@app.route('/gorev/<gorev_id>')\r\ndef gorev_goster(gorev_id):\r\n    if request.method == 'GET':\r\n        gorevler = list(db[\"gorevler\"].find().sort(\"_id\", -1))\r\n        aktif_gorev = db[\"gorevler\"].find_one({\"_id\": int(gorev_id)})\r\n        yapilacaklar = list(db[\"yapilacaklar\"].find({\"gorev_id\": int(gorev_id) }))\r\n        return render_template(\"gorev.html\", aktif_gorev=aktif_gorev, gorevler=gorevler, yapilacaklar=yapilacaklar)\r\n\r\n@app.route('/gorev-sil/<gorev_id>', methods=[\"POST\"])\r\ndef gorev_sil(gorev_id):\r\n    db[\"gorevler\"].delete_one({\"_id\": int(gorev_id)})\r\n    return redirect(\"/\", 302)\r\n@app.route('/uye-ol', methods=[\"GET\", \"POST\"])\r\ndef uye_ol():\r\n    if request.method == 'GET':\r\n        return render_template(\"uye-ol.html\")\r\n    else:\r\n        # Formdan gelen verileri al\r\n        email = request.form[\"email\"]\r\n        sifre = request.form[\"sifre\"]\r\n        adsoyad = request.form[\"adsoyad\"]\r\n\r\n        # Verileri collection'a ekle\r\n        db[\"kullanicilar\"].insert_one({\r\n            \"_id\": email,\r\n            \"sifre\": sifre,\r\n            \"adsoyad\": adsoyad\r\n        })\r\n        return redirect(\"/giris\", 302)\r\n\r\n@app.route('/giris', methods=[\"GET\", \"POST\"])\r\ndef giris():\r\n    if request.method == 'GET':\r\n        return render_template(\"giris.html\")\r\n    else:\r\n        # Formdan gelen verileri al\r\n        email = request.form[\"email\"]\r\n        sifre = request.form[\"sifre\"]\r\n\r\n        kullanici = db[\"kullanicilar\"].find_one({\"_id\": email})\r\n\r\n        if kullanici and kullanici[\"sifre\"] == sifre:\r\n            session['kullanici'] = kullanici\r\n            return redirect(\"/\", 302)\r\n        else:\r\n            return \"Kullanıcı bulunamadı ya da şifre geçersiz\"\r\n\r\n@app.route('/cikis', methods=[\"GET\", \"POST\"])\r\ndef cikis():\r\n    session.pop('kullanici', None)\r\n    return redirect(\"/\", 302)\r\n\r\nif __name__ == '__main__':\r\n    app.run(debug=True, host=\"0.0.0.0\", port=5000)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision 80194507496120ccfd146fdfff3cab527a1d1ef3)
++++ b/main.py	(date 1709822521768)
+@@ -28,7 +28,6 @@
+     yapilacaklar = list(db["yapilacaklar"].find({"gorev_id": aktif_gorev["_id"]}))
+     return render_template("gorev.html", aktif_gorev=aktif_gorev, gorevler=gorevler, yapilacaklar=yapilacaklar)
+ 
+-
+ @app.route('/gorev-ekle', methods=["GET", "POST"])
+ def gorev_ekle():
+     if request.method == 'GET':
+@@ -46,7 +45,7 @@
+     if request.method == 'GET':
+         gorevler = list(db["gorevler"].find().sort("_id", -1))
+         aktif_gorev = db["gorevler"].find_one({"_id": int(gorev_id)})
+-        yapilacaklar = list(db["yapilacaklar"].find({"gorev_id": int(gorev_id) }))
++        yapilacaklar = list(db["yapilacaklar"].find({"gorev_id": int(gorev_id)}))
+         return render_template("gorev.html", aktif_gorev=aktif_gorev, gorevler=gorevler, yapilacaklar=yapilacaklar)
+ 
+ @app.route('/gorev-sil/<gorev_id>', methods=["POST"])
