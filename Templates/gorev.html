@@ -1,100 +1,146 @@
 <!DOCTYPE html>
 <html lang="tr" data-bs-theme="dark">
+
 <head>
-  <title>ToDo</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-  .fakeimg {
-    height: 200px;
-    background: #aaa;
-  }
-  </style>
+    <title>ToDo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .fakeimg {
+            height: 200px;
+            background: #aaa;
+        }
+        .pagination {
+            justify-content: center;
+        }
+        .progress-bar {
+            border-radius: 5px;
+        }
+
+    </style>
 </head>
+
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand fs-2" href="/">ToDo</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-2" href="/">
+                ToDo
+            </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav ms-auto">
-        {% if session['kullanici'] %}
-        <li class="nav-item">
-          <span class="navbar-text me-3"><i class="bi bi-person"></i> {{ session['kullanici']['adsoyad'] }}</span>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-danger" href="/cikis"><i class="bi bi-box-arrow-right"></i> Çıkış</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="btn btn-primary me-2" href="/giris">Giriş</a>
-        </li>
-        <li class="nav-item">
-          <a class="btn btn-warning" href="/uye-ol">Üye Ol</a>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
-</nav>
-
-
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3 class="mt-4">Görevler
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">
-          + Yeni
-        </button>
-      </h3>
-      <ul class="nav nav-pills flex-column">
-        {% for g in gorevler %}
-          <li class="nav-item d-flex justify-content-between align-items-center">
-            <a class="nav-link {% if g['_id']==aktif_gorev['_id'] %}active{% endif %}" href="/gorev/{{g['_id']}}">{{ g['gorev'] }}</a>
-            <form action="/gorev-sil/{{ g['_id'] }}" method="post">
-              <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-            </form>
-          </li>
-        {% endfor %}
-      </ul>
-      <hr class="d-sm-none">
-    </div>
-  </div>
-</div>
-
-<!-- The Modal -->
-<div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Yeni Görev Ekle</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <!-- Modal body -->
-      <form action="/gorev-ekle" method="POST">
-        <div class="modal-body">
-          <div class="mb-3 mt-3">
-            <label for="gorev" class="form-label">Görev:</label>
-            <input type="text" class="form-control" id="gorev" placeholder="Görev" name="gorev">
-          </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav ms-auto">
+                    {% if session['kullanici'] %}
+                    <li class="nav-item">
+                        <span class="navbar-text me-3"><i class="bi bi-person"></i> {{ session['kullanici']['adsoyad'] }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-danger" href="/cikis"><i class="bi bi-box-arrow-right"></i> Çıkış</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Ekle</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Vazgeç</button>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-4 mx-auto">
+                <h3 class="text-success">Tamamlanan Görevler</h3>
+                <ul class="nav nav-pills flex-column">
+                    {% for g in gorevler %}
+                        {% if g['tamamlandi'] %}
+                            <li class="nav-item d-flex justify-content-between align-items-center">
+                                <span class="nav-link">{{ g['gorev'] }}</span>
+                                <span class="nav-link">Tamamlanma : {{ g['tamamlanma_zamani'] }}</span>
+                                <form action="/gorev-sil/{{ g['_id'] }}" method="post">
+                                    <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-sm-4 mx-auto">
+                <h3 class="text-warning">Aktif Görevler</h3>
+                <ul class="nav nav-pills flex-column">
+                    {% for g in gorevler %}
+                        {% if not g['tamamlandi'] %}
+                            <li class="nav-item d-flex justify-content-between align-items-center">
+                                <span class="nav-link">{{ g['gorev'] }}</span>
+                                <span class="nav-link">{{ g['tarih'] }}</span>
+                                <form action="/gorev-sil/{{ g['_id'] }}" method="post">
+                                    <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash3"></i></button>
+                                </form>
+                                <form action="/gorev-tamamla/{{ g['_id'] }}" method="post">
+                                    <button type="submit" class="btn btn-outline-success"><i class="bi bi-clipboard-check"></i></button>
+                                </form>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Yeni görev ekle butonu -->
+            <div class="col-sm-4">
+                <div class="mt-3 text-end">
+                    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#myModal">+ Yeni Görev </button>
+                </div>
+            </div>
         </div>
-      </form>
+
+        <!-- Sayfalama düğmeleri -->
+        <div class="row justify-content-center mt-3">
+            <div class="col-sm-6">
+                {{ pagination.links }}
+            </div>
+        </div>
+
+        <!-- İlerleme çubuğu -->
+        <div class="row mt-3">
+            <div class="col-sm-8">
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ ilerleme_yuzdesi }}%;" aria-valuenow="{{ ilerleme_yuzdesi }}" aria-valuemin="0" aria-valuemax="100">{{ ilerleme_yuzdesi }}%</div>
+                </div>
+            </div>
+        </div>
+
     </div>
-  </div>
-</div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Yeni Görev Ekle</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Modal body -->
+                <form action="/gorev-ekle" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3 mt-3">
+                            <label for="gorev" class="form-label">Görev:</label>
+                            <input type="text" class="form-control" id="gorev" placeholder="Görev" name="gorev">
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Ekle</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Vazgeç</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </body>
+
 </html>

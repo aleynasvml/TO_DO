@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b23c5579-ce95-4112-9b15-4936837df08a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b23c5579-ce95-4112-9b15-4936837df08a" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/Templates/ana_sayfa.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/giris.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/giris.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/giris.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Templates/gorev.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/gorev.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/uye-ol.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/uye-ol.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/uye-ol.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,11 +25,31 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;aleynasvml&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="cbc8ba68-7e77-4b5c-9730-69f206880473" />
+        <option name="url" value="https://github.com/aleynasvml/TO_DO.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2dMd9lxWqQqWcI1ayJp67pVUjAv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -42,9 +62,24 @@
     "Python.main.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "Rebasing master",
+    "last_opened_file_path": "E:/pythonEgitim/python/TO_DO",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+    ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\pythonEgitim\python\TO_DO" />
+      <recent name="E:\pythonEgitim\python\TO_DO\ımg" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\pythonEgitim\python\TO_DO\static" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TO_DO" />
@@ -86,5 +121,10 @@
       <updated>1709821731844</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit&#10;&#10;# Conflicts:&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/workspace.xml&#10;#&#9;Templates/giris.html&#10;#&#9;Templates/gorev.html&#10;#&#9;Templates/uye-ol.html&#10;#&#9;main.py" />
+    <MESSAGE value="Initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
   </component>
 </project>

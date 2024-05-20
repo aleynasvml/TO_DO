@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="dark">
+
+<head>
+    <title>ToDo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .fakeimg {
+            height: 200px;
+            background: #aaa;
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 10px;
+        }
+
+        .flash-messages li {
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-2" href="/">
+                ToDo
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+            </div>
+        </div>
+
+    </nav>
+
+
+    <!-- Giriş Yap Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Giriş Yap</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/giris" method="post">
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Şifre</label>
+                            <input type="password" class="form-control" id="loginPassword" name="sifre" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Üye Ol Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Üye Ol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/uye-ol" method="post">
+                        <div class="mb-3">
+                            <label for="signupEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="signupEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label">Şifre</label>
+                            <input type="password" class="form-control" id="signupPassword" name="sifre" required>
+                            <small id="passwordHelp" class="form-text text-muted">Şifreniz en az 8 karakterden oluşmalı, en az bir büyük harf, bir küçük harf ve bir rakam içermelidir.</small>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="adsoyad" class="form-label">Ad Soyad</label>
+                            <input type="text" class="form-control" id="adsoyad" name="adsoyad" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Üye Ol</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-center">
+           <div class="jumbotron">
+            <p class="lead">ToDo Listesi, işlerinizi düzenli bir şekilde takip etmenize yardımcı olur. Buradan görevlerinizi ekleyebilir ve tamamlayabilirsiniz.</p>
+            <hr class="my-4">
+            <p>ToDo ile zamanınızı daha verimli bir şekilde yönetin. Haydi Başlayalım</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">Üye Ol</button>
+            <p>Zaten üye misiniz?</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Giriş Yap</button>
+           </div>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="flash-messages">
+        {% for message in messages %}
+        <li class="flash-message" style="color: red;">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+
+
+</body>
+
+</html>
