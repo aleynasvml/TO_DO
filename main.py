@@ -51,23 +51,24 @@ def home_page():
         gorevler = list(db["gorevler"].find({"kullanici_email": kullanici_email}).sort("_id", -1))
         total = len(gorevler)
 
+        tamamlanan_gorev_sayisi_genel = sum(1 for gorev in gorevler if gorev["tamamlandi"])
+        toplam_gorev_sayisi_genel = total
+
+        if toplam_gorev_sayisi_genel == 0:
+            ilerleme_yuzdesi_genel = 0
+        else:
+            ilerleme_yuzdesi_genel = int((tamamlanan_gorev_sayisi_genel / toplam_gorev_sayisi_genel) * 100)
+
         pagination = Pagination(page=page, per_page=per_page, total=total)
 
-        gorevler = gorevler[(page - 1) * per_page: page * per_page]
+        gorevler_sayfa = gorevler[(page - 1) * per_page: page * per_page]
 
-        tamamlanan_gorev_sayisi = sum(1 for gorev in gorevler if gorev["tamamlandi"])
-        toplam_gorev_sayisi = len(gorevler)
 
-        if toplam_gorev_sayisi == 0:
-            ilerleme_yuzdesi = 0
-        else:
-            ilerleme_yuzdesi = (tamamlanan_gorev_sayisi / toplam_gorev_sayisi) * 100
-
-        if not gorevler:
-            return render_template("gorev.html", aktif_gorev=None, gorevler=[], yapilacaklar=[], ilerleme_yuzdesi=ilerleme_yuzdesi, pagination=pagination)
-        aktif_gorev = gorevler[0]
+        if not gorevler_sayfa:
+            return render_template("gorev.html", aktif_gorev=None, gorevler=[], yapilacaklar=[], ilerleme_yuzdesi=ilerleme_yuzdesi_genel, pagination=pagination)
+        aktif_gorev = gorevler_sayfa[0]
         yapilacaklar = list(db["gorevler"].find({"gorev_id": aktif_gorev["_id"], "kullanici_email": kullanici_email}))
-        return render_template("gorev.html", aktif_gorev=aktif_gorev, gorevler=gorevler, yapilacaklar=yapilacaklar, ilerleme_yuzdesi=ilerleme_yuzdesi, pagination=pagination)
+        return render_template("gorev.html", aktif_gorev=aktif_gorev, gorevler=gorevler_sayfa, yapilacaklar=yapilacaklar, ilerleme_yuzdesi=ilerleme_yuzdesi_genel, pagination=pagination)
     else:
         return redirect("/giris", 302)
 
